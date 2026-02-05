@@ -2,60 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>System Scan</title>
+<title>System Alert</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New',monospace}
 body{
+  margin:0;
+  height:100vh;
   background:black;
   color:#00ff66;
-  height:100vh;
+  font-family:"Courier New", monospace;
   display:flex;
   justify-content:center;
   align-items:center;
   text-align:center;
 }
+
+/* HIDDEN */
 .hidden{display:none}
 
-/* Hacker typing */
-.typing span{
-  display:inline-block;
-  opacity:0;
-  animation:appear 0.05s forwards;
+/* VIRUS TEXT */
+#virus h1{
+  font-size:22px;
+  margin-bottom:20px;
 }
-@keyframes appear{to{opacity:1}}
+#target{
+  font-size:26px;
+  color:#00ff66;
+  margin-top:10px;
+  letter-spacing:2px;
+}
 
+/* BUTTONS */
 button{
-  padding:12px 30px;
+  padding:12px 28px;
   margin:15px;
   font-size:18px;
   border:none;
-  border-radius:30px;
+  border-radius:25px;
   cursor:pointer;
-  transition:0.3s;
+  transition:0.2s;
 }
 button:hover{transform:scale(1.1)}
-button:active{transform:scale(0.9)}
+button:active{transform:scale(0.95)}
 
-.yes{background:#ff4da6;color:white;box-shadow:0 0 15px #ff4da6}
-.no{background:#444;color:white}
+.yes{
+  background:#ff4da6;
+  color:white;
+  box-shadow:0 0 15px #ff4da6;
+}
+.no{
+  background:#555;
+  color:white;
+}
 
-/* Valentine pages */
+/* VALENTINE PAGES */
 .valentine{
-  background:pink url('https://i.imgur.com/8QfQZzv.png');
+  background:pink url("https://i.imgur.com/8QfQZzv.png");
   background-size:cover;
-  color:#b30059;
   width:100%;
   height:100%;
   padding:40px;
   overflow:auto;
+  color:#b30059;
 }
-.fade{animation:fadeIn 1s}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 .images img{
   width:200px;
-  border-radius:20px;
   margin:10px;
+  border-radius:20px;
   box-shadow:0 0 20px hotpink;
 }
 </style>
@@ -65,34 +79,39 @@ button:active{transform:scale(0.9)}
 
 <!-- VIRUS SCREEN -->
 <div id="virus">
-  <h2 class="typing" id="hackText"></h2>
-  <br>
-  <button onclick="startSite()">RUN CLEANUP</button>
+  <h1>
+    SCANNING DEVICE...<br><br>
+    ACCESS GRANTED ✔<br><br>
+    TARGET IDENTIFIED:
+  </h1>
+  <div id="target"></div>
+
+  <button onclick="startSite()">CONTINUE</button>
 </div>
 
 <!-- PAGE 1 -->
-<div id="page1" class="valentine hidden fade">
-  <h1>Will you be my Valentine bbggg 💘</h1>
+<div id="page1" class="valentine hidden">
+  <h1>Will you be my valentine bbggg 💘</h1>
   <button class="yes" onclick="page2()">YES</button>
   <button class="no" onclick="pageNo()">no</button>
 </div>
 
-<!-- PAGE NO -->
-<div id="noPage" class="valentine hidden fade">
+<!-- NO PAGE -->
+<div id="noPage" class="valentine hidden">
   <h1>😢</h1>
   <h2>haaa bolwowowo yawrrwrw :(</h2>
   <button onclick="back()">Go Back</button>
 </div>
 
 <!-- PAGE 2 -->
-<div id="page2" class="valentine hidden fade">
+<div id="page2" class="valentine hidden">
   <h1>Paccaaa??? Fir puri zindagi mere sath rehna padegaaw 🥰</h1>
   <button class="yes" onclick="finalPage()">YES</button>
   <button class="yes" onclick="finalPage()">yes (koi aur rasta noii)</button>
 </div>
 
 <!-- FINAL PAGE -->
-<div id="final" class="valentine hidden fade">
+<div id="final" class="valentine hidden">
   <audio id="loveMusic" src="love.mp3" loop></audio>
 
   <h2>
@@ -114,63 +133,48 @@ You are not just my love, you are my home, my peace, my forever. Main awpco aaj 
   </div>
 </div>
 
-<!-- AUDIO -->
 <audio id="virusMusic" src="virus.mp3"></audio>
 
 <script>
-const hackLines = [
-  "INITIALIZING SYSTEM BREACH...",
-  "ACCESSING USER DATA...",
-  "TARGET IDENTIFIED:",
-  "ARNIKA BONGIRWAR",
-  "INJECTING FEELINGS.EXE",
-  "WARNING: HEART COMPROMISED ❤️"
-];
-
-let hIndex=0;
-function typeHack(){
-  if(hIndex >= hackLines.length) return;
-  const line = hackLines[hIndex];
-  const h = document.createElement("div");
-  h.className="typing";
-  document.getElementById("hackText").appendChild(h);
-
-  [...line].forEach((c,i)=>{
-    const s=document.createElement("span");
-    s.textContent=c;
-    s.style.animationDelay=${i*0.05}s;
-    h.appendChild(s);
-  });
-  hIndex++;
-  setTimeout(typeHack, line.length*50+500);
+/* HACKER TYPING EFFECT */
+const nameText = "ARNIKA BONGIRWAR";
+let i = 0;
+function typeTarget(){
+  if(i < nameText.length){
+    document.getElementById("target").innerHTML += nameText.charAt(i);
+    i++;
+    setTimeout(typeTarget, 80);
+  }
 }
-typeHack();
+typeTarget();
 
+/* NAVIGATION */
 function startSite(){
-  document.getElementById("virusMusic").play();
+  const v = document.getElementById("virusMusic");
+  v.play().catch(()=>{});
   document.getElementById("virus").classList.add("hidden");
   document.getElementById("page1").classList.remove("hidden");
 }
 
 function page2(){
-  pageHide();
+  hideAll();
   document.getElementById("page2").classList.remove("hidden");
 }
 function pageNo(){
-  pageHide();
+  hideAll();
   document.getElementById("noPage").classList.remove("hidden");
 }
 function back(){
-  pageHide();
+  hideAll();
   document.getElementById("page1").classList.remove("hidden");
 }
 function finalPage(){
-  pageHide();
+  hideAll();
   document.getElementById("final").classList.remove("hidden");
-  document.getElementById("loveMusic").play();
+  document.getElementById("loveMusic").play().catch(()=>{});
 }
-function pageHide(){
-  document.querySelectorAll('.valentine').forEach(p=>p.classList.add('hidden'));
+function hideAll(){
+  document.querySelectorAll(".valentine").forEach(e=>e.classList.add("hidden"));
 }
 </script>
 
